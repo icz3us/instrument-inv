@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '../../../hooks/useAuth';
+import { useInstruments } from '../../../hooks/useInstruments';
 import { createClient } from '@supabase/supabase-js'
 import styles from '../dashboard.module.css';
 
@@ -13,7 +15,17 @@ const supabase = createClient(
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const [instruments, setInstruments] = useState([]);
+  const { user, loading: authLoading } = useAuth();
+  const { 
+    instruments, 
+    loading: instrumentsLoading, 
+    error, 
+    fetchInstruments, 
+    createInstrument, 
+    updateInstrument, 
+    deleteInstrument 
+  } = useInstruments();
+  
   const [showModal, setShowModal] = useState(false);
   const [editingInstrument, setEditingInstrument] = useState(null);
   const [formData, setFormData] = useState({
@@ -23,37 +35,13 @@ export default function AdminDashboard() {
     category: '',
     status: 'available'
   });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
+  // Check if user is authenticated and has admin role
   useEffect(() => {
-    console.log('Admin dashboard loaded');
-    fetchInstruments();
-    setLoading(false); // Set loading to false since we're not checking auth
-  }, []);
-
-  const fetchInstruments = async () => {
-    try {
-      console.log('Fetching instruments in admin dashboard...');
-      
-      const { data, error } = await supabase
-        .from('instruments')
-        .select('*')
-      
-      console.log('API response in admin dashboard:', { data, error });
-      
-      if (error) {
-        throw new Error('Failed to fetch instruments: ' + error.message);
-      }
-      
-      setInstruments(data);
-    } catch (err) {
-      console.error('Error fetching instruments in admin dashboard:', err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if (!authLoading && (!user || user.role !== 'admin')) {
+      router.push('/login');
     }
-  };
+  }, [user, authLoading, router]);
 
   const handleLogout = async () => {
     console.log('Logging out from admin dashboard...');
@@ -64,62 +52,22 @@ export default function AdminDashboard() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-
     try {
-      console.log('Submitting instrument data in admin dashboard:', formData);
-      
       if (editingInstrument) {
-        console.log('Updating existing instrument in admin dashboard');
-        // Update existing instrument
-        const { data, error } = await supabase
-          .from('instruments')
-          .update({
-            name: formData.name,
-            description: formData.description,
-            quantity: formData.quantity,
-            category: formData.category,
-            status: formData.status
-          })
-          .eq('id', editingInstrument.id)
-          .select()
-
-        if (error) {
-          throw new Error('Failed to update instrument: ' + error.message);
-        }
+        await updateInstrument(editingInstrument.id, formData);
       } else {
-        console.log('Creating new instrument in admin dashboard');
-        // Create new instrument
-        const { data, error } = await supabase
-          .from('instruments')
-          .insert([
-            {
-              name: formData.name,
-              description: formData.description,
-              quantity: formData.quantity,
-              category: formData.category,
-              status: formData.status
-            }
-          ])
-          .select()
-
-        if (error) {
-          throw new Error('Failed to create instrument: ' + error.message);
-        }
+        await createInstrument(formData);
       }
-
-      fetchInstruments();
+      
       setShowModal(false);
       setEditingInstrument(null);
       setFormData({ name: '', description: '', quantity: 0, category: '', status: 'available' });
     } catch (err) {
-      console.error('Error saving instrument in admin dashboard:', err);
-      setError(err.message);
+      console.error('Error saving instrument:', err);
     }
   };
 
   const handleEdit = (instrument) => {
-    console.log('Editing instrument in admin dashboard:', instrument);
     setEditingInstrument(instrument);
     setFormData({
       name: instrument.name,
@@ -132,29 +80,27 @@ export default function AdminDashboard() {
   };
 
   const handleDelete = async (id) => {
-    console.log('Deleting instrument with ID in admin dashboard:', id);
-    
     if (!confirm('Are you sure you want to delete this instrument?')) return;
-
     try {
-      const { error } = await supabase
-        .from('instruments')
-        .delete()
-        .eq('id', id)
-
-      if (error) {
-        throw new Error('Failed to delete instrument: ' + error.message);
-      }
-
-      fetchInstruments();
+      await deleteInstrument(id);
     } catch (err) {
-      console.error('Error deleting instrument in admin dashboard:', err);
-      setError(err.message);
+      console.error('Error deleting instrument:', err);
     }
   };
 
-  // Add a simple test to see if the component is rendering
-  console.log('Admin dashboard component rendering');
+  // Show loading state while checking auth
+  if (authLoading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loading}>Checking authentication...</div>
+      </div>
+    );
+  }
+
+  // Redirect if not admin
+  if (!user || user.role !== 'admin') {
+    return null;
+  }
 
   return (
     <div className={styles.container}>
@@ -173,7 +119,7 @@ export default function AdminDashboard() {
 
       {error && <div className={styles.error}>{error}</div>}
 
-      {loading ? (
+      {instrumentsLoading ? (
         <div className={styles.loading}>Loading...</div>
       ) : (
         <div className={styles.tableContainer}>
