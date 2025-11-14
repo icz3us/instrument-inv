@@ -1,0 +1,87 @@
+┌─────────────────────────────────────────────────────────────┐
+│         INSTRUMENT INVENTORY SYSTEM - QUICK REFERENCE       │
+└─────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════
+📧 LOGIN CREDENTIALS
+═══════════════════════════════════════════════════════════════
+
+ADMIN ACCOUNT
+  Email:    admin@instrument.com
+  Password: admin123
+
+EMPLOYEE ACCOUNT
+  Email:    employee@instrument.com
+  Password: employee123
+
+═══════════════════════════════════════════════════════════════
+🔑 ROLE PERMISSIONS
+═══════════════════════════════════════════════════════════════
+
+ADMIN CAN:
+  ✅ Add new instruments
+  ✅ Edit instruments
+  ✅ Delete instruments
+  ✅ View all instruments
+  ✅ Update instrument status
+
+EMPLOYEE CAN:
+  ✅ View all instruments
+  ✅ Update instrument status
+  ✅ Filter instruments by status
+  ❌ Cannot add/edit/delete instruments
+
+═══════════════════════════════════════════════════════════════
+🚀 GETTING STARTED
+═══════════════════════════════════════════════════════════════
+
+1. Install dependencies:
+   npm install
+
+2. Configure .env.local with Supabase credentials:
+   NEXT_PUBLIC_SUPABASE_URL=your-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-key
+
+3. Run setup.sql in Supabase SQL Editor
+
+4. Create users in Supabase Authentication panel
+
+5. Start development server:
+   npm run dev
+
+6. Access at http://localhost:3000
+
+═══════════════════════════════════════════════════════════════
+📁 PROJECT STRUCTURE
+═══════════════════════════════════════════════════════════════
+
+app/
+├── api/instruments/      → CRUD API endpoints
+├── dashboard/
+│   ├── admin/           → Admin dashboard (Full CRUD)
+│   └── employee/        → Employee dashboard (View + Status)
+├── login/               → Login page
+└── supabase/            → Supabase client
+
+middleware.js             → Route protection & role guards
+
+═══════════════════════════════════════════════════════════════
+🛠️ INSTRUMENT MANAGEMENT
+═══════════════════════════════════════════════════════════════
+
+Instrument Fields:
+  • Name (required)
+  • Description
+  • Quantity (required)
+  • Category
+  • Status: Available | Checked Out | Maintenance
+
+═══════════════════════════════════════════════════════════════
+📖 DOCUMENTATION
+═══════════════════════════════════════════════════════════════
+
+For detailed setup: See SETUP_GUIDE.md
+For API reference: See app/api/instruments/route.js
+For database schema: See supabase/setup.sql
+
+═══════════════════════════════════════════════════════════════
