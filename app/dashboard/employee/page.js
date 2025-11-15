@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '../../../hooks/useAuth';
+import { useInstruments } from '../../../hooks/useInstruments';
 import { createClient } from '@supabase/supabase-js'
 import styles from '../dashboard.module.css';
 
@@ -13,39 +15,23 @@ const supabase = createClient(
 
 export default function EmployeeDashboard() {
   const router = useRouter();
-  const [instruments, setInstruments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { user, loading: authLoading } = useAuth();
+  const { 
+    instruments, 
+    loading: instrumentsLoading, 
+    error, 
+    fetchInstruments, 
+    updateInstrument 
+  } = useInstruments();
+  
   const [filterStatus, setFilterStatus] = useState('all');
 
+  // Check if user is authenticated and has employee or admin role
   useEffect(() => {
-    console.log('Employee dashboard loaded');
-    fetchInstruments();
-    setLoading(false); // Set loading to false since we're not checking auth
-  }, []);
-
-  const fetchInstruments = async () => {
-    try {
-      console.log('Fetching instruments in employee dashboard...');
-      
-      const { data, error } = await supabase
-        .from('instruments')
-        .select('*')
-      
-      console.log('API response in employee dashboard:', { data, error });
-      
-      if (error) {
-        throw new Error('Failed to fetch instruments: ' + error.message);
-      }
-      
-      setInstruments(data);
-    } catch (err) {
-      console.error('Error fetching instruments in employee dashboard:', err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if (!authLoading && (!user || (user.role !== 'employee' && user.role !== 'admin'))) {
+      router.push('/login');
     }
-  };
+  }, [user, authLoading, router]);
 
   const handleLogout = async () => {
     console.log('Logging out from employee dashboard...');
@@ -56,28 +42,9 @@ export default function EmployeeDashboard() {
 
   const handleStatusUpdate = async (instrument, newStatus) => {
     try {
-      console.log('Updating instrument status in employee dashboard:', { instrument, newStatus });
-      
-      const { data, error } = await supabase
-        .from('instruments')
-        .update({
-          name: instrument.name,
-          description: instrument.description,
-          quantity: instrument.quantity,
-          category: instrument.category,
-          status: newStatus
-        })
-        .eq('id', instrument.id)
-        .select()
-
-      if (error) {
-        throw new Error('Failed to update instrument status: ' + error.message);
-      }
-
-      fetchInstruments();
+      await updateInstrument(instrument.id, { ...instrument, status: newStatus });
     } catch (err) {
-      console.error('Error updating instrument status in employee dashboard:', err);
-      setError(err.message);
+      console.error('Error updating instrument status:', err);
     }
   };
 
@@ -85,8 +52,19 @@ export default function EmployeeDashboard() {
     ? instruments
     : instruments.filter(instrument => instrument.status === filterStatus);
 
-  // Add a simple test to see if the component is rendering
-  console.log('Employee dashboard component rendering');
+  // Show loading state while checking auth
+  if (authLoading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loading}>Checking authentication...</div>
+      </div>
+    );
+  }
+
+  // Redirect if not employee or admin
+  if (!user || (user.role !== 'employee' && user.role !== 'admin')) {
+    return null;
+  }
 
   return (
     <div className={styles.container}>
@@ -115,7 +93,7 @@ export default function EmployeeDashboard() {
 
       {error && <div className={styles.error}>{error}</div>}
 
-      {loading ? (
+      {instrumentsLoading ? (
         <div className={styles.loading}>Loading...</div>
       ) : (
         <div className={styles.tableContainer}>
