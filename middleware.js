@@ -4,9 +4,11 @@ import { NextResponse } from 'next/server'
 export async function middleware(req) {
   console.log('Middleware triggered for:', req.nextUrl.pathname);
   
-  // Allow access to login page and root page for everyone
-  if (req.nextUrl.pathname === '/login' || req.nextUrl.pathname === '/') {
-    console.log('Allowing access to login or root page');
+  // Allow access to login page, root page, and API routes for everyone
+  if (req.nextUrl.pathname === '/login' || 
+      req.nextUrl.pathname === '/' || 
+      req.nextUrl.pathname.startsWith('/api/')) {
+    console.log('Allowing access to login, root, or API route');
     return NextResponse.next();
   }
   
