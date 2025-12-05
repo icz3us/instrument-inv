@@ -9,9 +9,9 @@ const supabase = createClient(
 
 export async function GET(request) {
   try {
-    // Get all instruments
+    // Get all users
     const { data, error } = await supabase
-      .from('instruments')
+      .from('users')
       .select('*')
       
     if (error) {
@@ -20,7 +20,7 @@ export async function GET(request) {
     
     return NextResponse.json(data)
   } catch (error) {
-    console.error('Error in GET /api/instruments:', error)
+    console.error('Error in GET /api/users:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -28,27 +28,21 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const body = await request.json()
-    const { name, description, quantity, category, condition, calibration_due, purchase_date, warranty_expiration } = body
+    const { email, password_hash, role } = body
     
     // Validate required fields
-    if (!name || !quantity) {
-      return NextResponse.json({ error: 'Name and quantity are required' }, { status: 400 })
+    if (!email || !password_hash || !role) {
+      return NextResponse.json({ error: 'Email, password_hash, and role are required' }, { status: 400 })
     }
     
-    // Insert new instrument
+    // Insert new user
     const { data, error } = await supabase
-      .from('instruments')
+      .from('users')
       .insert([
         {
-          name,
-          description,
-          quantity,
-          category,
-          condition: condition || 'good',
-          calibration_due,
-          purchase_date,
-          warranty_expiration,
-          status: 'available'
+          email,
+          password_hash,
+          role
         }
       ])
       .select()
@@ -65,27 +59,26 @@ export async function POST(request) {
 
 export async function PUT(request) {
   try {
-    const body = await request.json()
-    const { id, name, description, quantity, category, status, condition, calibration_due, purchase_date, warranty_expiration } = body
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get('id')
     
-    // Validate required fields
     if (!id) {
-      return NextResponse.json({ error: 'ID is required' }, { status: 400 })
+      return NextResponse.json({ error: 'User ID is required' }, { status: 400 })
     }
     
-    // Update instrument
+    const body = await request.json()
+    const { role } = body
+    
+    // Validate required fields
+    if (!role) {
+      return NextResponse.json({ error: 'Role is required' }, { status: 400 })
+    }
+    
+    // Update user
     const { data, error } = await supabase
-      .from('instruments')
+      .from('users')
       .update({
-        name,
-        description,
-        quantity,
-        category,
-        status,
-        condition,
-        calibration_due,
-        purchase_date,
-        warranty_expiration,
+        role,
         updated_at: new Date().toISOString()
       })
       .eq('id', id)
@@ -96,7 +89,7 @@ export async function PUT(request) {
     }
     
     if (data.length === 0) {
-      return NextResponse.json({ error: 'Instrument not found' }, { status: 404 })
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
     
     return NextResponse.json(data[0])
@@ -112,12 +105,12 @@ export async function DELETE(request) {
     
     // Validate required fields
     if (!id) {
-      return NextResponse.json({ error: 'ID is required' }, { status: 400 })
+      return NextResponse.json({ error: 'User ID is required' }, { status: 400 })
     }
     
-    // Delete instrument
+    // Delete user
     const { error } = await supabase
-      .from('instruments')
+      .from('users')
       .delete()
       .eq('id', id)
       
@@ -125,7 +118,7 @@ export async function DELETE(request) {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
     
-    return NextResponse.json({ message: 'Instrument deleted successfully' })
+    return NextResponse.json({ message: 'User deleted successfully' })
   } catch (err) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }

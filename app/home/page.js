@@ -1,7 +1,16 @@
-'use client';
-
 import Link from 'next/link';
 import styles from './home.module.css';
+import { Metadata } from 'next';
+
+// Add page-specific metadata
+export const metadata = {
+  title: "Home - Instrument Inventory",
+  description: "Welcome to Instrument Inventory - Manage and track all your musical instruments with ease",
+  openGraph: {
+    title: "Home - Instrument Inventory",
+    description: "Welcome to Instrument Inventory - Manage and track all your musical instruments with ease",
+  },
+};
 
 // Mock data for instruments
 const mockInstruments = [
@@ -26,7 +35,7 @@ export default function Home() {
       <header className={styles.header}>
         <div className={styles.headerContent}>
           <h1 className={styles.title}>Instrument Inventory</h1>
-          <nav className={styles.nav}>
+          <nav className={styles.nav} role="navigation" aria-label="Main navigation">
             <Link href="/home" className={styles.navLink}>Home</Link>
             <Link href="/dashboard" className={styles.navLink}>Dashboard</Link>
             <Link href="/login" className={styles.navLink}>Logout</Link>
@@ -34,37 +43,40 @@ export default function Home() {
         </div>
       </header>
 
-      <main className={styles.main}>
-        <div className={styles.welcomeSection}>
-          <h2 className={styles.welcomeTitle}>Welcome to Instrument Inventory</h2>
+      <main className={styles.main} role="main">
+        <section className={styles.welcomeSection} aria-labelledby="welcome-heading">
+          <h2 id="welcome-heading" className={styles.welcomeTitle}>Welcome to Instrument Inventory</h2>
           <p className={styles.welcomeText}>
             Manage and track all your musical instruments with ease. View availability, 
             check conditions, and monitor usage across your collection.
           </p>
-        </div>
+        </section>
 
-        <div className={styles.statsGrid}>
-          <div className={styles.statCard}>
-            <div className={styles.statNumber}>{stats.total}</div>
-            <div className={styles.statLabel}>Total Instruments</div>
+        <section className={styles.statsSection} aria-labelledby="stats-heading">
+          <h2 id="stats-heading" className="sr-only">Instrument Statistics</h2>
+          <div className={styles.statsGrid}>
+            <div className={styles.statCard}>
+              <div className={styles.statNumber}>{stats.total}</div>
+              <div className={styles.statLabel}>Total Instruments</div>
+            </div>
+            <div className={styles.statCard}>
+              <div className={styles.statNumber}>{stats.available}</div>
+              <div className={styles.statLabel}>Available</div>
+            </div>
+            <div className={styles.statCard}>
+              <div className={styles.statNumber}>{stats.inUse}</div>
+              <div className={styles.statLabel}>In Use</div>
+            </div>
+            <div className={styles.statCard}>
+              <div className={styles.statNumber}>{stats.maintenance}</div>
+              <div className={styles.statLabel}>Maintenance</div>
+            </div>
           </div>
-          <div className={styles.statCard}>
-            <div className={styles.statNumber}>{stats.available}</div>
-            <div className={styles.statLabel}>Available</div>
-          </div>
-          <div className={styles.statCard}>
-            <div className={styles.statNumber}>{stats.inUse}</div>
-            <div className={styles.statLabel}>In Use</div>
-          </div>
-          <div className={styles.statCard}>
-            <div className={styles.statNumber}>{stats.maintenance}</div>
-            <div className={styles.statLabel}>Maintenance</div>
-          </div>
-        </div>
+        </section>
 
-        <div className={styles.instrumentsSection}>
+        <section className={styles.instrumentsSection} aria-labelledby="instruments-heading">
           <div className={styles.sectionHeader}>
-            <h3 className={styles.sectionTitle}>Recent Instruments</h3>
+            <h3 id="instruments-heading" className={styles.sectionTitle}>Recent Instruments</h3>
             <Link href="/dashboard" className={styles.viewAllLink}>View All →</Link>
           </div>
           
@@ -84,20 +96,20 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
-        <div className={styles.quickActions}>
-          <Link href="/dashboard" className={styles.actionButton}>
-            Manage Inventory
-          </Link>
-          <Link href="/dashboard" className={styles.actionButtonSecondary}>
-            Add New Instrument
-          </Link>
-        </div>
+        <section className={styles.actionsSection} aria-labelledby="actions-heading">
+          <h2 id="actions-heading" className="sr-only">Quick Actions</h2>
+          <div className={styles.quickActions}>
+            <Link href="/dashboard" className={styles.actionButton}>
+              Manage Inventory
+            </Link>
+            <Link href="/dashboard" className={styles.actionButtonSecondary}>
+              Add New Instrument
+            </Link>
+          </div>
+        </section>
       </main>
     </div>
   );
 }
-
-
-

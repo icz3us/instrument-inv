@@ -1,0 +1,130 @@
+.container {
+  background: linear-gradient(135deg, #2A2A2A 0%, #252525 100%);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(201, 201, 201, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header h2 {
+  margin: 0;
+  color: #EDEDED;
+}
+
+.loansGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.loanCard {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(201, 201, 201, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.loanCard:hover {
+  transform: translateY(-3px);
+}
+
+.loanHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.loanHeader h3 {
+  margin: 0;
+  color: #EDEDED;
+}
+
+.daysIndicator {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.normal {
+  background: rgba(74, 222, 128, 0.2);
+  color: #4ADE80;
+}
+
+.soon {
+  background: rgba(251, 191, 36, 0.2);
+  color: #FBBF24;
+}
+
+.today {
+  background: rgba(251, 191, 36, 0.2);
+  color: #FBBF24;
+}
+
+.overdue {
+  background: rgba(248, 113, 113, 0.2);
+  color: #F87171;
+}
+
+.loanDetails p {
+  margin: 0.5rem 0;
+  color: #C9C9C9;
+}
+
+.loanDetails strong {
+  color: #EDEDED;
+}
+
+.loanActions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #C9C9C9;
+}
+
+.emptyState {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  color: #C9C9C9;
+}
+
+.emptyState p {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .loansGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .loanHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

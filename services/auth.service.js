@@ -1,26 +1,50 @@
 import { httpService } from './http.service';
 import { API_ENDPOINTS } from '../constants/api';
 
+/**
+ * @typedef {import('../interfaces/auth.interface').LoginRequest} LoginRequest
+ * @typedef {import('../interfaces/auth.interface').RegisterRequest} RegisterRequest
+ * @typedef {import('../interfaces/auth.interface').AuthApiResponse} AuthApiResponse
+ */
+
 class AuthService {
-  // Login user
+  /**
+   * Login user
+   * @param {LoginRequest} credentials - The login credentials
+   * @returns {Promise<AuthApiResponse>}
+   */
   async login(credentials) {
-    return await httpService.post(API_ENDPOINTS.AUTH.LOGIN, credentials);
+    const response = await httpService.post(API_ENDPOINTS.AUTH.LOGIN, credentials);
+    return response;
   }
 
-  // Logout user
+  /**
+   * Logout user
+   * @returns {Promise<AuthApiResponse>}
+   */
   async logout() {
-    return await httpService.post(API_ENDPOINTS.AUTH.LOGOUT);
+    const response = await httpService.post(API_ENDPOINTS.AUTH.LOGOUT);
+    return response;
   }
 
-  // Register user
+  /**
+   * Register user
+   * @param {RegisterRequest} userData - The user data
+   * @returns {Promise<AuthApiResponse>}
+   */
   async register(userData) {
-    return await httpService.post(API_ENDPOINTS.AUTH.REGISTER, userData);
+    const response = await httpService.post(API_ENDPOINTS.AUTH.REGISTER, userData);
+    return response;
   }
 
-  // Get current user session
+  /**
+   * Get current user session
+   * @returns {Promise<AuthApiResponse|null>}
+   */
   async getCurrentSession() {
     try {
-      return await httpService.get(API_ENDPOINTS.AUTH.SESSION);
+      const response = await httpService.get(API_ENDPOINTS.AUTH.SESSION);
+      return response;
     } catch (error) {
       // If we get a 401, it means there's no active session, which is not an error
       if (error.message.includes('401')) {

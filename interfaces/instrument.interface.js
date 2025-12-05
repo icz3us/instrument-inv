@@ -32,5 +32,19 @@
  * @property {'available'|'checked_out'|'maintenance'} [status] - The status of the instrument
  */
 
+/**
+ * Instrument API response structure
+ * @typedef {Object} InstrumentApiResponse
+ * @property {Instrument[]} data - Array of instruments
+ * @property {string} [error] - Error message if operation failed
+ */
+
+/**
+ * Single instrument API response structure
+ * @typedef {Object} SingleInstrumentApiResponse
+ * @property {Instrument} data - The instrument
+ * @property {string} [error] - Error message if operation failed
+ */
+
 // Export empty object to make this a valid module
 export {};

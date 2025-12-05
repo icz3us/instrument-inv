@@ -1,0 +1,165 @@
+.container {
+  background: linear-gradient(135deg, #2A2A2A 0%, #252525 100%);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(201, 201, 201, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header h2 {
+  margin: 0;
+  color: #EDEDED;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+}
+
+.filterSelect {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(201, 201, 201, 0.15);
+  border-radius: 12px;
+  padding: 0.5rem;
+  color: #EDEDED;
+  font-family: inherit;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #4ADE80;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(201, 201, 201, 0.2);
+}
+
+.timelineItem {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.timelineMarker {
+  position: absolute;
+  left: -2.5rem;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4ADE80;
+  border: 3px solid #1A1A1A;
+}
+
+.timelineContent {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(201, 201, 201, 0.1);
+}
+
+.requestHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.requestHeader h3 {
+  margin: 0;
+  color: #EDEDED;
+}
+
+.requestDetails p {
+  margin: 0.5rem 0;
+  color: #C9C9C9;
+}
+
+.requestDetails strong {
+  color: #EDEDED;
+}
+
+.status {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pending {
+  background: rgba(156, 163, 175, 0.2);
+  color: #9CA3AF;
+}
+
+.approved {
+  background: rgba(74, 222, 128, 0.2);
+  color: #4ADE80;
+}
+
+.denied {
+  background: rgba(248, 113, 113, 0.2);
+  color: #F87171;
+}
+
+.returned {
+  background: rgba(139, 92, 246, 0.2);
+  color: #8B5CF6;
+}
+
+.overdue {
+  background: rgba(248, 113, 113, 0.2);
+  color: #F87171;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #C9C9C9;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem;
+  color: #C9C9C9;
+}
+
+.emptyState p {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .requestHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
