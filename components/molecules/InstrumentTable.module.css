@@ -1,0 +1,119 @@
+.container {
+  width: 100%;
+}
+
+.filter {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-sm);
+  background: var(--glass-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.tableContainer {
+  background: var(--glass-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow);
+  overflow-x: auto;
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.table th {
+  padding: var(--spacing-sm);
+  text-align: left;
+  font-weight: 600;
+  color: var(--gray-800);
+  border-bottom: 2px solid var(--gray-300);
+  font-size: var(--font-size-secondary);
+}
+
+.table td {
+  padding: var(--spacing-md) var(--spacing-sm);
+  border-bottom: 1px solid var(--gray-300);
+  color: var(--gray-700);
+  font-size: var(--font-size-secondary);
+}
+
+.table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: var(--font-size-label);
+  font-weight: 600;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.available {
+  background: rgba(72, 187, 120, 0.2);
+  color: var(--success);
+}
+
+.checkedOut {
+  background: rgba(251, 191, 36, 0.2);
+  color: var(--warning);
+}
+
+.maintenance {
+  background: rgba(248, 113, 113, 0.2);
+  color: var(--error);
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-xs);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  margin: 2px 0;
+}
+
+.statusSelect {
+  min-width: 120px;
+  margin-top: var(--spacing-xs);
+}
+
+.loading {
+  text-align: center;
+  padding: var(--spacing-xxl);
+  font-size: var(--font-size-card);
+  color: var(--gray-700);
+  background: var(--glass-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.noData {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--gray-600);
+  font-style: italic;
+}

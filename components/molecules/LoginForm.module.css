@@ -1,0 +1,30 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+.error {
+  color: var(--error);
+  font-size: var(--font-size-secondary);
+  text-align: center;
+  padding: var(--spacing-xs);
+  background: rgba(254, 226, 226, 0.1);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(254, 202, 202, 0.3);
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.submitButton {
+  margin-top: var(--spacing-xs);
+  width: 100%;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}

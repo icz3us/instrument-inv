@@ -31,5 +31,14 @@
  * @property {string} expires_at - The expiration timestamp
  */
 
+/**
+ * Auth API response structure
+ * @typedef {Object} AuthApiResponse
+ * @property {User} [user] - The user object
+ * @property {Session} [session] - The session object
+ * @property {string} [error] - Error message if operation failed
+ * @property {string} [message] - Success message
+ */
+
 // Export empty object to make this a valid module
 export {};

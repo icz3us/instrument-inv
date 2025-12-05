@@ -11,9 +11,14 @@ export const useAuth = () => {
     try {
       setLoading(true);
       setError(null);
-      const userData = await authService.login(credentials);
-      setUser(userData.user);
-      return userData;
+      const response = await authService.login(credentials);
+      
+      if (response.error) {
+        throw new Error(response.error);
+      }
+      
+      setUser(response.user);
+      return response;
     } catch (err) {
       setError(err.message);
       console.error('Error logging in:', err);
@@ -42,8 +47,13 @@ export const useAuth = () => {
     try {
       setLoading(true);
       setError(null);
-      const registeredUser = await authService.register(userData);
-      return registeredUser;
+      const response = await authService.register(userData);
+      
+      if (response.error) {
+        throw new Error(response.error);
+      }
+      
+      return response;
     } catch (err) {
       setError(err.message);
       console.error('Error registering:', err);
@@ -58,6 +68,11 @@ export const useAuth = () => {
       setLoading(true);
       setError(null);
       const sessionData = await authService.getCurrentSession();
+      
+      if (sessionData && sessionData.error) {
+        throw new Error(sessionData.error);
+      }
+      
       setUser(sessionData ? sessionData.user : null);
     } catch (err) {
       setError(err.message);
